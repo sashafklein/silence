@@ -1,6 +1,6 @@
 {
   "name": "react-silence",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "silence console errors",
   "source": "index.ts",
   "main": "dist/index.js",
