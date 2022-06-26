@@ -13,11 +13,11 @@ A lightweight set of utils for silencing console output in a variety of contexts
 ## Getting started
 
 ```bash
-npm install -D silence
+npm install -D react-silence
 ```
 
 ```ts
-import { silence, unsilence } from 'silence';
+import { silence, unsilence } from 'react-silence';
 
 // Defaults to silencing errors
 silence();
@@ -42,7 +42,7 @@ By convention, log type args precede matcher args, but any order works.
 Simply turns off the console for the given types and any text matching the given matchers:
 
 ```ts
-import { silence } from 'silence';
+import { silence } from 'react-silence';
 
 // Silence all errors - 'error' is default types argument
 silence();
