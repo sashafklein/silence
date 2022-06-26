@@ -1,6 +1,6 @@
 # React Silence
 
-Exports a set of utils for silencing console output in a variety of contexts, including React components.
+A lightweight set of utils for silencing console output in a variety of contexts, including React components.
 
 - [silence](#silence)
 - [unsilence](#unsilence)
@@ -102,12 +102,12 @@ console.warn("I'm not silenced, even though I match, because I'm outside the `si
 A convenience method for pre-applying the same logTypes and matchers to `silence`'s methods:
 
 ```ts
-const { silenceWithin } = silenceFor("warn", /match/);
-silenceWithin(() => {
-  console.warn("I'm silenced because I match.");
-  console.warn("I'm not because I don't.");
-  console.error("Although I match the regex, I'm not silenced, since I'm an error.");
-});
+const { silence, unsilence, /* etc */ } = silenceFor("warn", /match/);
+silence();
+console.warn("I'm silenced because I match.");
+console.warn("I'm not because I don't.");
+console.error("Although I match the regex, I'm not silenced, since I'm an error.");
+unsilence();
 ```
 
 ## useSilence
@@ -116,11 +116,11 @@ A React hook for silencing in a component context:
 
 ```tsx
 const QuietComponent = () => {
-  useSilence("info", /will be silenced/);
-  console.info("I will be silenced.");
+  useSilence("error", /SomeError/);
+
   return (
     <div>
-      <PotentiallyNoisyComponent />
+      <MayLogSomeError />
       <p>Ahh... Silence.</p>
     </div>
   );
