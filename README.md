@@ -1,6 +1,6 @@
 # Silence
 
-Exports a set of utils for silencing console output in a variety of contexts.
+Exports a set of utils for silencing console output in a variety of contexts, including React components.
 
 - [silence](#silence)
 - [unsilence](#unsilence)

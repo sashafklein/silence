@@ -1,5 +1,5 @@
 {
-  "name": "silence",
+  "name": "react-silence",
   "version": "1.0.0",
   "description": "silence console errors",
   "source": "index.ts",
