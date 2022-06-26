@@ -2,14 +2,14 @@ import { useEffect } from "react";
 
 type LogType = "error" | "log" | "warn" | "info";
 
-const og = {
-  error: console.error,
-  warn: console.warn,
-  log: console.log,
-  info: console.info,
-};
-
-const allLogTypes = Object.keys(og) as LogType[];
+const allLogTypes: LogType[] = ["error", "log", "warn", "info"];
+const og = allLogTypes.reduce(
+  (obj, type) => ({
+    [type]: console[type],
+    ...obj,
+  }),
+  {} as Record<LogType, (...msg: string[]) => void>
+);
 
 const getLogTypesAndMatchers = (
   logTypesOrMatchers: Array<LogType | RegExp>
@@ -18,7 +18,13 @@ const getLogTypesAndMatchers = (
   const matchers: RegExp[] = [];
   logTypesOrMatchers.forEach((el) => {
     if (typeof el === "string") {
-      logTypes.push(el);
+      if (!og[el]) {
+        og.error(
+          `Passed a string to silence which was not a log type. Ignoring: "${el}"`
+        );
+      } else {
+        logTypes.push(el);
+      }
     } else {
       matchers.push(el);
     }
@@ -33,9 +39,9 @@ const getLogTypesAndMatchers = (
 export const silence = (...logTypesOrMatchers: Array<LogType | RegExp>) => {
   const { logTypes, matchers } = getLogTypesAndMatchers(logTypesOrMatchers);
   logTypes.forEach((logType) => {
-    console.error = (...args: string[]) => {
+    console[logType] = (...args: string[]) => {
       // Do nothing if no matchers or matchers match
-      if (!matchers) return;
+      if (!matchers.length) return;
       if (matchers.some((reg) => reg.test(args[0]))) return;
 
       og[logType](...args);
@@ -48,14 +54,12 @@ export const silence = (...logTypesOrMatchers: Array<LogType | RegExp>) => {
  * By default, unsilences all console log types.
  * */
 export const unsilence = (...logTypes: LogType[]) => {
-  (logTypes || allLogTypes).forEach((logType) => {
+  (logTypes.length ? logTypes : allLogTypes).forEach((logType) => {
     console[logType] = og[logType];
   });
 };
 
-/**
- * Turns silence on in a before block in the describe, and then unsilences after.
- * */
+/** Turns silence on in a before block in the describe, and then unsilences after. */
 export const silenceDescribe = (
   ...logTypesOrMatchers: Array<LogType | RegExp>
 ) => {
@@ -69,9 +73,7 @@ export const silenceDescribe = (
   });
 };
 
-/**
- * Turns silence on and off for the code run within the callback passed as a first argument.
- * */
+/*Turns silence on and off for the code run within the callback passed as a first argument. */
 export const silenceWithin = (
   action: () => void,
   ...logTypesOrMatchers: Array<LogType | RegExp>
@@ -93,6 +95,13 @@ export const silenceFor = (...logTypesOrMatchers: Array<LogType | RegExp>) => {
   };
 };
 
+export const matchers = {
+  reactKeysError: /Each child in a list should have a unique "key" prop/,
+  jestActError: /inside a test was not wrapped in act/,
+  deprecationWarning:
+    /is deprecated and will be removed in a future major release/,
+};
+
 /** Silences within the body of a React component. */
 export const useSilence = (...logTypesOrMatchers: Array<LogType | RegExp>) => {
   const { logTypes } = getLogTypesAndMatchers(logTypesOrMatchers);
@@ -101,11 +110,4 @@ export const useSilence = (...logTypesOrMatchers: Array<LogType | RegExp>) => {
   useEffect(() => {
     unsilence(...logTypes);
   });
-};
-
-export const matchers = {
-  reactKeysError: /Each child in a list should have a unique "key" prop/,
-  jestActError: /inside a test was not wrapped in act/,
-  deprecationWarning:
-    /is deprecated and will be removed in a future major release/,
 };
