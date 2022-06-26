@@ -8,6 +8,7 @@ A lightweight set of utils for silencing console output in a variety of contexts
 - [silenceWithin](#silenceWithin)
 - [silenceFor](#silenceFor)
 - [useSilence](#useSilence)
+- [matchers](#matchers)
 
 ## Getting started
 
@@ -125,3 +126,8 @@ const QuietComponent = () => {
     </div>
   );
 }
+```
+
+## matchers
+
+The library also exports a small matchers object defining a handful of regex matchers for convenience.
