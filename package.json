@@ -20,8 +20,8 @@
   "license": "ISC",
   "peerDependencies": {
     "jest": ">= 27.0.0",
-    "react": ">= 17.0.2",
-    "react-dom": ">= 17.0.2"
+    "react": ">= 16.0.0",
+    "react-dom": ">= 16.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
@@ -37,9 +37,9 @@
     "microbundle": "^0.15.0"
   },
   "dependencies": {
-    "@types/react": "^17.0.2",
-    "@types/react-dom": "^17.0.2",
-    "react": ">= 17.0.2",
-    "react-dom": ">= 17.0.2"
+    "@types/react": "^16.0.0",
+    "@types/react-dom": "^16.0.0",
+    "react": ">= 16.0.0",
+    "react-dom": ">= 16.0.0"
   }
 }

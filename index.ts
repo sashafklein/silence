@@ -73,7 +73,7 @@ export const silenceDescribe = (
   });
 };
 
-/*Turns silence on and off for the code run within the callback passed as a first argument. */
+/* Turns silence on and off for the code run within the callback passed as a first argument. */
 export const silenceWithin = (
   action: () => void,
   ...logTypesOrMatchers: Array<LogType | RegExp>
